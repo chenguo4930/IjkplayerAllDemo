@@ -33,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private LinearLayout mLoadingLayout;    //加载显示控件
     private TextView mErrorTv;           //播放出错显示文本
 
+    private int mCurrentPosition;       //视频当前播放时间点
+
     private static final int CHANGE_PLAY_TIME = 0x01;
     private final Handler mHandler = new Handler() {
         @Override
@@ -255,7 +257,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onPause() {
         super.onPause();
         if (mVideoPlayer.isPlaying()) {
+            mCurrentPosition = mVideoPlayer.getCurrentPosition();
             mVideoPlayer.pause();
+            mHandler.removeMessages(CHANGE_PLAY_TIME);
         }
     }
 
@@ -263,5 +267,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onRestart() {
         super.onRestart();
         mVideoPlayer.resume();
+        mHandler.sendEmptyMessage(CHANGE_PLAY_TIME);
+        mVideoPlayer.seekTo(mCurrentPosition);
     }
 }
