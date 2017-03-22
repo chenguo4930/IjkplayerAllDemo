@@ -204,11 +204,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private void videoPlay() {
         mVideoPlayer.start();
         mPlayAndStopBtn.setImageResource(R.mipmap.comment_play_mini);
+        mHandler.sendEmptyMessage(CHANGE_PLAY_TIME);
     }
 
     private void videoStop() {
         mVideoPlayer.pause();
         mPlayAndStopBtn.setImageResource(R.mipmap.video_play_little);
+        mHandler.removeMessages(CHANGE_PLAY_TIME);
     }
 
     //适配时长时间显示格式
